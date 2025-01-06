@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-merriweather: "Merriweather", serif;
+}
+
+body {
+  font-family: var(--font-merriweather);
+  margin: 0;
+  padding: 0;
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none; /* For Firefox */
+  scroll-behavior: smooth;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, Edge */
+  scroll-behavior: smooth;
+}
