@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 Note that there is a backend for this project , but its not mine , it was clonned from another github repo which am not pushing it to this repo
-the backend report is called goshop
+the backend repo is called goshop
 you can find it here: https://github.com/quangdangfit/goshop.git
 
 ## Getting Started
