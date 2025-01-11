@@ -4,12 +4,25 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart, updateCart } from "@/store/cartSlice";
 import { CiSquareRemove } from "react-icons/ci";
+import Cookies from "js-cookie";
+import ApiClient from "../utils/apiClient";
+import { clearCart } from "@/store/cartSlice";
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
   const cartDetails = useSelector((state) => state.cart.items);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
+  const router = useRouter();
   console.log(cartDetails);
-  console.log(totalPrice);
+  //   console.log(totalPrice);
+  const [userId, setUserId] = useState("");
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const id = Cookies.get("userId");
+    setUserId(id);
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -41,10 +54,37 @@ const CartPage = () => {
       })
     );
   };
+
+  const handleCheckout = async () => {
+    const cartDetailsForCheckout = {
+      lines: cartDetails.map((item) => {
+        return {
+          product_id: item.id,
+          quantity: item.quantity,
+        };
+      }),
+
+      user_id: userId,
+    };
+
+    // console.log(cartDetailsForCheckout);
+    const response = await ApiClient.post("/orders", cartDetailsForCheckout);
+    if (response.status === 200) {
+      dispatch(clearCart());
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+      setMessage(
+        "Order has been placed successfully, visit your profile to see your orders"
+      );
+    }
+  };
+
   return (
     <ProtectedRoute>
-      <div className="max-w-full border h-[90vh]">
-        <h1 className="text-center text-xl font-light mt-6 p-3 mb-5">
+      <div className="max-w-full h-[90vh] mt-10">
+        <h1 className="text-center text-2xl font-light mt-6 p-3 mb-5">
           Your Cart
         </h1>
         <div className="w-full flex justify-center flex-col items-center">
@@ -113,12 +153,21 @@ const CartPage = () => {
               </div>
             ))
           ) : (
-            <p>Your cart is empty.</p>
+            <div>
+              {!showMessage && (
+                <p className="text-center text-md">Your cart is empty.</p>
+              )}
+              {showMessage && (
+                <h1 className="text-lg text-green-500 text-center mt-10">
+                  {message}
+                </h1>
+              )}
+            </div>
           )}
           {cartDetails.length >= 1 && (
             <div className="border-t-2 w-[75vw] pt-5 mb-10">
               <div className="flex justify-between gap-48 w-1/2">
-                <h1 className="uppercase text-xl font-bold">Subtotal</h1>
+                <h1 className="uppercase text-xl font-bold">total</h1>
                 <p className="text-xl font-bold">${totalPrice}</p>
               </div>
               <div className="text-xs mt-2 w-1/2">
@@ -126,7 +175,10 @@ const CartPage = () => {
                 your order, you accept our Shipping & Returns policies.
               </div>
 
-              <button className="border border-black rounded-md uppercase p-2 text-sm mt-3 w-1/2 hover:text-white hover:bg-black ease-in-out duration-300 transition-all">
+              <button
+                className="border border-black rounded-md uppercase p-2 text-sm mt-3 w-1/2 hover:text-white hover:bg-black ease-in-out duration-300 transition-all"
+                onClick={handleCheckout}
+              >
                 Checkout
               </button>
             </div>

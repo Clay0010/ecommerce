@@ -11,6 +11,9 @@ import { useState, useEffect } from "react";
 import { SearchModal } from "./SearchModal";
 import ApiClient from "../utils/apiClient";
 import { debounce } from "../utils/debounce";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setSearchResultState } from "@/store/searchSlice";
 
 export const Navbar = () => {
   const [accessToken, setAccessToken] = useState(null);
@@ -19,6 +22,8 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Get the access token only after the component mounts on the client side
@@ -26,13 +31,6 @@ export const Navbar = () => {
     setAccessToken(token);
     // Ensure the client is hydrated
     setIsHydrated(true);
-
-    // const fetchProcuts = async () => {
-    //   const response = await ApiClient.get("./products");
-    //   console.log(response.data.result.products);
-    //   setProducts(response.data.result.products);
-    // };
-    // fetchProcuts();
   }, []);
 
   if (!isHydrated) {
@@ -46,6 +44,8 @@ export const Navbar = () => {
       return;
     }
     const response = await ApiClient.get("./products");
+    console.log(response);
+
     const allProducts = response.data.result.products;
 
     const filteredResult = allProducts.filter((product) =>
@@ -53,13 +53,23 @@ export const Navbar = () => {
     );
 
     setSearchResult(filteredResult);
-    // console.log(filteredResult);
-  }, 500);
+  }, 200);
 
   const handleChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
     handleSearch(query);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    router.push("/search");
+
+    setShowSearchModal(false);
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
+    dispatch(setSearchResultState(searchResult));
   };
 
   return (
@@ -87,14 +97,16 @@ export const Navbar = () => {
             }
           }}
         >
-          <input
-            type="text"
-            placeholder="Search"
-            className={`border p-2 w-64 rounded-md`}
-            value={searchQuery}
-            onFocus={() => setShowSearchModal(true)}
-            onChange={handleChange}
-          />
+          <form onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              placeholder="Search"
+              className={`border p-2 w-64 rounded-md`}
+              value={searchQuery}
+              onFocus={() => setShowSearchModal(true)}
+              onChange={handleChange}
+            />
+          </form>
           {showSearchModal && searchQuery.trim() && (
             <SearchModal
               onClickOutside={() => setShowSearchModal(false)}

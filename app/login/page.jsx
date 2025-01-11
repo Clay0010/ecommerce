@@ -32,6 +32,7 @@ const page = () => {
 
       if (response.status === 200) {
         console.log(response);
+        console.log("id", response.data.result.user.id);
 
         console.log("login successful");
         Cookies.set("access_token", response.data.result.access_token, {
@@ -41,6 +42,9 @@ const page = () => {
         Cookies.set("refresh_token", response.data.result.refresh_token, {
           path: "",
           expires: 7,
+        });
+        Cookies.set("userId", response.data.result.user.id, {
+          path: "",
         });
         router.push("/");
       }

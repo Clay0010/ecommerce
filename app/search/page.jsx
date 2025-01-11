@@ -1,32 +1,17 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 
-import ApiClient from "../utils/apiClient";
+const SearchPage = () => {
+  const searchResult = useSelector((state) => state.search.results);
+  console.log("search result , search page", searchResult);
 
-const page = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await ApiClient.get("/products");
-        console.log(response.data.result.products);
-
-        setProducts(response.data.result.products);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const content = products.map((product) => {
+  const content = searchResult.map((product) => {
     return (
       <div
-        key={product.id}
         className="w-96 h-96 text-white rounded-lg shadow-lg duration-500 ease-in-out hover:shadow-xl hover:cursor-pointer p-5 relative flex justify-center items-end group overflow-hidden"
+        key={product.id}
       >
         <div
           className="absolute inset-0 bg-cover bg-center transform scale-105 group-hover:scale-100 transition-all duration-500"
@@ -67,10 +52,10 @@ const page = () => {
 
   return (
     <div className="p-10">
-      <h1 className="text-center pb-8 text-2xl font-bold">All Products</h1>
+      <h1 className="text-3xl text-center font-bold mb-10">Search Result</h1>
       <div className="flex flex-wrap justify-center gap-5">{content}</div>
     </div>
   );
 };
 
-export default page;
+export default SearchPage;

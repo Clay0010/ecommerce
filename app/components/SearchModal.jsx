@@ -24,7 +24,7 @@ export const SearchModal = ({
         }
       }}
     >
-      <p className="uppercase text-xs pb-1 border-b-[1px] border-black">
+      <p className="uppercase text-xs pb-1 border-b-[1px]">
         search result
       </p>
 
