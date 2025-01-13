@@ -77,9 +77,9 @@ export const Navbar = () => {
       {/* Left Section */}
       <div className="flex gap-7 flex-grow">
         <Link href="/shop">Shop</Link>
-        <Link href="#">New Arrival</Link>
-        <Link href="#">On Sale</Link>
-        <Link href="#">Brands</Link>
+        <Link href="/shop">New Arrival</Link>
+        <Link href="/shop">On Sale</Link>
+        <Link href="/shop">Brands</Link>
       </div>
 
       {/* Center Section */}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export const ElectronicsFeature = () => {
@@ -18,9 +19,12 @@ export const ElectronicsFeature = () => {
             Dive into an immersive sound experience with cutting-edge headphones
             that redefine clarity and comfort.
           </p>
-          <button className="px-8 py-3 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-black hover:text-white transition-all duration-300">
+          <Link
+            href="/shop"
+            className="px-8 py-3 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-black hover:text-white transition-all duration-300"
+          >
             Explore Headphones
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -39,13 +43,14 @@ export const ElectronicsFeature = () => {
             Keep your life on track with smartwatches designed for modern
             living.
           </p>
-          <button className="px-8 py-3 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-black hover:text-white transition-all duration-300">
+          <Link
+            href="/shop"
+            className="px-8 py-3 bg-white text-black font-semibold rounded-lg shadow-lg hover:bg-black hover:text-white transition-all duration-300"
+          >
             Explore Smartwatches
-          </button>
+          </Link>
         </div>
       </div>
-
-    
     </div>
   );
 };

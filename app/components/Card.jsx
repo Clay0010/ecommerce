@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export const Card = () => {
   return (
@@ -24,9 +25,12 @@ export const Card = () => {
               </h1>
               <p className="text-white text-sm">{descriptions[index]}</p>
             </span>
-            <button className="mb-10 bg-white p-2 z-10 rounded ease-in-out duration-200 hover:bg-black hover:text-white">
+            <Link
+              href="/shop"
+              className="mb-10 bg-white p-2 z-10 rounded ease-in-out duration-200 hover:bg-black hover:text-white"
+            >
               Shop Now
-            </button>
+            </Link>
           </div>
         );
       })}
